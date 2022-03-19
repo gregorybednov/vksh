@@ -1,0 +1,7 @@
+#!/bin/sh
+. ./vkmethod.sh			# импорт универсальной функции вызова метода
+if vk_method "status.get" "" > status
+then
+	cat status | jq -r ".text"	# запись статуса, его парсинг как JSON объекта
+fi
+rm status 			# удаление временного объекта статус

@@ -1,0 +1,6 @@
+#!/bin/sh
+. ./friselect
+friend_selection_dialog $*
+read message
+clear
+./im.send $friend_id $message

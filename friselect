@@ -1,0 +1,10 @@
+#!/bin/sh
+. ./getFriendID
+
+friend_selection_dialog() {
+	friend_id=$(getFriendID $*) # пока не проверяем, что там может быть больше одного человека
+	curl -o /tmp/photo -s $(./user.getPhoto $friend_id)
+	#fbi -a -d /dev/fb2 /tmp/photo
+	img2txt /tmp/photo
+	rm /tmp/photo
+}

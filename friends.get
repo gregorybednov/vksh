@@ -1,0 +1,16 @@
+#!/bin/sh
+. ./vkmethod.sh							# импорт универсального вызова метода vk api
+	
+
+fl_processing(){ 						# парсинг json в с разными параметрами
+	local paramlist="id first_name last_name"		# список параметров
+	for param in $paramlist
+	do
+		cat friendlist | jq -r ".items[].$param" > $param # собственно парсинг по параметру
+	done
+	paste -d ' ' $paramlist	> friendlist			# построение таблицы по списку параметров
+	rm $paramlist						# удаление списком всех временных файлов
+}
+
+vk_method "friends.get" "&fields=nickname" > friendlist		# вызов метода vk api
+fl_processing							# парсинг результатов

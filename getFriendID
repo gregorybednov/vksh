@@ -1,0 +1,14 @@
+#!/bin/sh
+
+findFriend(){
+	cat friendlist | grep "$*" | cut -d ' ' -f1
+}
+
+getFriendID(){
+	if [ -s friendlist ]
+	then
+		findFriend $*
+	else
+		./friends.get && findFriend $*
+	fi
+}

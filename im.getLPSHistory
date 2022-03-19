@@ -1,0 +1,20 @@
+#!/bin/sh
+
+. ./vkmethod.sh
+
+ts=$(cat LPSts)
+pts=$(cat LPSpts)
+
+#if [ -f new ]
+#then
+#	echo "'new' temporary file exists. It seems that last call was less than 1 second ago" >&2
+#	return 2
+#fi
+
+if vk_method "messages.getLongPollHistory" "&pts=$pts&ts=$ts&onlines=0&lp_version=3" | nl2escaped > new 
+then
+		cat new | jq ".new_pts" > LPSpts
+		cat new
+fi
+#sleep 1s
+rm new

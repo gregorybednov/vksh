@@ -1,0 +1,13 @@
+#!/bin/sh
+
+. ./vkmethod.sh
+
+if vk_method "messages.getHistory" "&peer_id=$1&count=200" > vkhist
+then
+	cat vkhist | sed -e '$ ! s/$/\\/g' | tr '\n' 'n' | sed -e "$ s/.$//g" | jq ".items[] | [ .id, .text, .attachments[]?.sticker.images[0].url ]"  > vkhist2
+	cat vkhist2 | jq -r ".[0]" > vkhistid
+	cat vkhist2 | jq ".[1]" > vkhisttext
+	cat vkhist2 | jq -r ".[2]" | sed 's/null//g' > vkhistattachments
+	paste vkhistid vkhisttext vkhistattachments
+	rm vkhist*
+fi

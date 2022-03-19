@@ -1,0 +1,48 @@
+#!/bin/sh
+
+waitime=1m
+actime=10s
+sltime=$waitime
+tfID='VkHistActive'
+
+sleep_time_update(){
+	if [ "$sltime" = "$actime" ]
+	then # если состояние активное, то
+		if [ -f /tmp/tf$tfID ]
+		then # если маркер активности сущетвует, то
+			sltime=$actime
+		else # если маркер активности истёк, то
+			sltime=$waitime
+		fi
+	else
+		sltime=$actime
+	fi
+}
+
+parsevkhist(){
+	cat /tmp/lpshist | jq
+	# здесь должно что-то быть!!!!!!!
+}
+
+mainlogic(){
+	n=$(cat /tmp/lpshist | jq -r '.messages.count')
+	if [ $n -ne 0 ]
+	then
+		if [ -f /tmp/tf$tdID ]
+		then
+			echo ''
+		else
+			./tf $tfID $waitime &
+		fi
+		parsevkhist
+	fi
+}
+
+while true
+do
+	./im.getLPSHistory > /tmp/lpshist
+	mainlogic
+	rm /tmp/lpshist
+	sleep_time_update
+	sleep $sltime 
+done

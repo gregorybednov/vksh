@@ -1,0 +1,9 @@
+#!/bin/sh
+. ./vkmethod.sh
+V="5.131"
+vk_method "messages.getLongPollServer" "&need_pts=1&lp_version=3" | jq -r ".server, .key, .ts, .pts" | split -l1 - LPS
+mv LPSaa LPSserver
+mv LPSab LPSkey
+mv LPSac LPSts
+mv LPSad LPSpts
+

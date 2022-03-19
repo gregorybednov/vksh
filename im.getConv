@@ -1,0 +1,17 @@
+#!/bin/sh
+
+. ./vkmethod.sh	# импорт метода обращения к VK API
+
+# функция обработка ответа
+fl_processing(){
+	local paramlist="conversation.peer.id conversation.chat_settings.members_count conversation.chat_settings.title" # список необходимыъ обработок
+	for param in $paramlist
+	do
+		cat imlist | nl2escaped | jq -r ".items[].$param" 2> /dev/null > $param
+	done
+	paste -d ' ' $paramlist
+	rm imlist
+	rm $paramlist
+}
+
+vk_method "messages.getConversations" "&count=4" > imlist && fl_processing # вызов метода

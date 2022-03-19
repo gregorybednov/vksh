@@ -1,0 +1,7 @@
+#!/bin/sh
+
+. ./vkmethod.sh
+
+args=$(echo $1 | tr ' ' ',')
+
+vk_method "users.get" "&user_ids=$args&fields=photo_50" | jq -r ".[].photo_50"

@@ -1,0 +1,7 @@
+#!/bin/sh
+. ./vkmethod.sh
+peer=$1				# запомнить peer получателя
+shift				# и сместить набор аргументов
+message=$(echo $* | tr ' ' '+')	# из оставшихся аргументов сделать строку, пробелы заменить на +
+vk_args="&peer_id=$peer&message=$message&random_id=$RANDOM" # подготовка аргументов
+vk_method "messages.send" $vk_args
